@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Favorite } from 'src/favorites/entities/favorites.entity';
 
 @Entity()
 export class Product {
@@ -25,4 +26,7 @@ export class Product {
 
   @Column()
   imageUrl: string;
+
+  @OneToMany(() => Favorite, (favorite) => favorite.product)
+  favorites: Favorite[];
 }
