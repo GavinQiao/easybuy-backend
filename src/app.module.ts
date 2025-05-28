@@ -4,6 +4,7 @@ import { ProductModule } from './product/product.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './user/auth.module';
+import {FavoriteModule} from './favorites/favorites.module'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './user/auth.module';
     }),
     UserModule,
     AuthModule,
+    FavoriteModule,
     ProductModule,
   ],
 })
