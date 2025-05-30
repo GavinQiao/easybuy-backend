@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Favorite } from 'src/favorites/entities/favorites.entity';
+import { CartItem } from 'src/cart/entities/cart.entity';
 
 @Entity()
 export class Product {
@@ -29,4 +30,7 @@ export class Product {
 
   @OneToMany(() => Favorite, (favorite) => favorite.product)
   favorites: Favorite[];
+
+  @OneToMany(()=>CartItem,(cartItem)=>cartItem.product)
+  cartItem: CartItem[];
 }
