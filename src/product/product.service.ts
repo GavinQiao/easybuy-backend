@@ -20,6 +20,12 @@ export class ProductService {
     return this.repo.find();
   }
 
+  async findByCategory(category:string) {
+    const products = await this.repo.find({where: {category}});
+    if (!products) throw new NotFoundException('Products not found');
+    return products;
+  }
+
   async findOne(id: number) {
     const product = await this.repo.findOne({ where: { id } });
     if (!product) throw new NotFoundException('Product not found');

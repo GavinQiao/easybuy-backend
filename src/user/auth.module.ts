@@ -16,7 +16,7 @@ import { JwtStrategy } from 'src/auth/jwt.strategy';
     ConfigModule.forRoot(), // 加载 .env 配置
     JwtModule.register({
       secret: process.env.JWT_SECRET, // 来自 .env
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   controllers: [AuthController],

@@ -28,6 +28,9 @@ export class Product {
   @Column()
   imageUrl: string;
 
+  @Column()
+  description: string;
+
   @OneToMany(() => Favorite, (favorite) => favorite.product)
   favorites: Favorite[];
 

@@ -1,15 +1,18 @@
-import {
+  import {
     Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe,
-    UseInterceptors,UploadedFile
+    UseInterceptors,UploadedFile,
+    UseGuards
   } from '@nestjs/common';
   import { ProductService } from './product.service';
   import { CreateProductDto } from './dto/create-product.dto';
   import { UpdateProductDto } from './dto/update-product.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import {diskStorage} from 'multer';
-import { extname } from 'path';
+  import { FileInterceptor } from '@nestjs/platform-express';
+  import {diskStorage} from 'multer';
+  import { extname } from 'path';
+  import { JwtAuthGuard } from 'src/jwt-auth.guard';
   
-  @Controller('products')
+  @Controller('api/products')
+  @UseGuards(JwtAuthGuard)
   export class ProductController {
     constructor(private readonly service: ProductService) {}
   
@@ -21,6 +24,11 @@ import { extname } from 'path';
     @Get()
     findAll() {
       return this.service.findAll();
+    }
+
+    @Get('category/:category')
+    findByCategory (@Param('category') category:string) {
+      return this.service.findByCategory(category);
     }
 
     @Get('best-seller')
@@ -42,6 +50,7 @@ import { extname } from 'path';
         }),
       }),
     )
+
     upload(@UploadedFile() file: Express.Multer.File) {
     const url = `http://localhost:3000/uploads/${file.filename}`;
     return { imageUrl: url };
@@ -52,8 +61,6 @@ import { extname } from 'path';
       return this.service.findOne(id);
     }
 
-    
-  
     @Put(':id')
     update(
       @Param('id', ParseIntPipe) id: number,
