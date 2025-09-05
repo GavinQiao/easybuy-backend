@@ -1,10 +1,11 @@
-import { UseGuards,Controller,Post,Req,BadRequestException } from "@nestjs/common";
+import { UseGuards,Controller,Post,Req,Res,BadRequestException,RawBodyRequest, Body } from "@nestjs/common";
 import { StripeService } from "./stripe.service";
 import { CartService } from "src/cart/cart.service";
 import { AuthGuard } from "@nestjs/passport";
+import Stripe from "stripe";
 // stripe.controller.ts
 @UseGuards(AuthGuard('jwt'))
-@Controller('stripe')
+@Controller('api/stripe')
 export class StripeController {
   constructor(
     private readonly stripeService: StripeService,
@@ -28,5 +29,19 @@ export class StripeController {
 
     const session = await this.stripeService.createCheckoutSession(userId, items);
     return { url: session.url };
+  }
+
+  @Post('webhook')
+  async webhook(@Req() req: RawBodyRequest<Request>, @Res() res: Response) {
+    const sig = req.headers['stripe-signature'];
+    let event: Stripe.Event;
+
+    try {
+    await this.stripeService.handleWebhook(req.rawBody as Buffer, sig as string);
+    return { received: true };
+  } catch (err) {
+    console.error('⚠️ Webhook Error:', err.message);
+    throw new BadRequestException('Webhook Error!');
+  }
   }
 }

@@ -61,6 +61,15 @@
       return this.service.findOne(id);
     }
 
+    @Get('/relevant/:id')
+    async findRelevant(@Param('id', ParseIntPipe) id: number){
+      const product = await this.service.findOne(id);
+      const category = product.category;
+      let products = await this.service.findByCategory(category);
+      products = products.filter(p => p.id !== id);
+      return products;
+    }
+
     @Put(':id')
     update(
       @Param('id', ParseIntPipe) id: number,

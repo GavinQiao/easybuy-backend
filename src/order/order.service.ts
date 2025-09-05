@@ -23,6 +23,7 @@ export class OrderService {
 
     const order = this.orderRepo.create({
       user: { id: userId },
+      status: 'pending',
       items: cartItems.map(item => ({
         product: item.product,
         quantity: item.quantity,
@@ -30,7 +31,6 @@ export class OrderService {
     });
 
     await this.orderRepo.save(order);
-    await this.cartRepo.delete({ user: { id: userId } }); // 清空购物车
 
     return order;
   }

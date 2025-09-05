@@ -1,5 +1,5 @@
 // order.entity.ts
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, OneToMany, Column } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { OrderItem } from './orderItem.entity';
 
@@ -7,6 +7,12 @@ import { OrderItem } from './orderItem.entity';
 export class Orders {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  status: string;
+
+  @Column({ nullable: true })
+  stripeSessionId: string;
 
   @CreateDateColumn()
   createdAt: Date;

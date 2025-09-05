@@ -3,7 +3,7 @@ import { OrderService } from "./order.service";
 import { AuthGuard } from "@nestjs/passport";
 
 @UseGuards(AuthGuard('jwt'))
-@Controller('orders')
+@Controller('api/orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 

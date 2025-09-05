@@ -46,4 +46,10 @@ export class CartService {
       relations: ['product'], // 关联商品信息
     });
   }
+
+  async clearCart(userId: number){
+    await this.cartRepo.delete({
+      user: {id:userId}
+    })
+  }
 }
